@@ -1,0 +1,24 @@
+body {
+  background-color: black;
+  color: #fff;
+}
+
+.const {
+  color: #569cd6;
+}
+
+.variable {
+  color: #9CDCFE;
+}
+
+.symbol {
+  color: #fff;
+}
+
+.value {
+  color: #ce9178;
+}
+
+.number {
+  color: #1FCFCC;
+}

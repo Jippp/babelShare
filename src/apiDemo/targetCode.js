@@ -1,0 +1,1 @@
+const afterPluginVal = 'Hello Babel!';
