@@ -22,3 +22,8 @@ body {
 .number {
   color: #1FCFCC;
 }
+
+.error {
+  color: #000;
+  background-color: red;
+}
