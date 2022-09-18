@@ -32,6 +32,7 @@ const { transformFileSync } = require('@babel/core')
 const simplePlugin = require('./simplePlugin')
 
 const { code } = transformFileSync(path.resolve(__dirname, './sourceCode.js'), {
+  // 执行顺序是从前往后执行的
   plugins: [
     // 如果需要给插件传参，要将写法改为数组形式
     [simplePlugin, {

@@ -67,7 +67,7 @@ const observer = new MutationObserver((mutationList) => {
   const list = mutationList[0]
   const sourceCodeList = []
 
-  // dom增加 删除
+  // dom增加
   if(list.type === 'childList') {
     const addNodes = list.addedNodes, removeNodes = list.removedNodes;
     const addLen = addNodes.length
@@ -76,10 +76,8 @@ const observer = new MutationObserver((mutationList) => {
     if(addLen) {
       for(let i = 0; i < addLen; i++) {
         if(addNodes[i].nodeType === 1) {
-          // sourceCode += addNodes[i].innerText
           sourceCodeList.push(addNodes[i].innerText)
         }else if(addNodes[i].nodeType === 3) {
-          // sourceCode += addNodes[i].data
           sourceCodeList.push(addNodes[i].data)
         }
       }
