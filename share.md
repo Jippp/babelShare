@@ -3,6 +3,7 @@
 ---
 
 参考链接：
+- [AST explorer](https://astexplorer.net/)
 - [babel](https://babeljs.io/)
 - [esprima](https://github.com/jquery/esprima)
 - [estree](https://github.com/estree/estree)
@@ -21,7 +22,7 @@ Babel是一个JavaScript compiler
 
 解析器：简单来首就是用来分析源代码转为ast结构的
 
-简单介绍一下几个JS Parser：
+简单介绍一下几个JS解析器：
 
 - esprima：是基于Firefox的js引擎`SpiderMonkey`内部规定的AST标准实现的，后来将这个AST标准命名为`ESTree`标准
 > github描述如下： Once upon a time, an unsuspecting Mozilla engineer created an API in Firefox that exposed the SpiderMonkey engine's JavaScript parser as a JavaScript API. Said engineer documented the format it produced, and this format caught on as a lingua franca for tools that manipulate JavaScript source code.
@@ -186,7 +187,7 @@ function traverseNode(node, parent) {
 元素就是遍历AST时的各种Node
 访问者就是我们传入的各个函数
 
-在`traverse函数`中将元素和访问者关联起来，实现在遍历到具体的`ast Node`时执行相应的Visitor函数
+在`traverse函数`中将元素和访问者关联起来，实现在遍历到具体的`AST Node`时执行相应的Visitor函数
 
 #### Generator阶段
 
@@ -233,5 +234,7 @@ module.exports = (apis, options, dirname) => {
 
 ### 案例
 
-之前说babel可以做很多事情，这里写了一个简单的`代码高亮的案例`，参考[这里](./src/demo/)
+之前说babel可以做很多事情，这里写了一个简单的`代码高亮的案例`，代码在[这里](./src/demo/)
+
+演示效果如下：
 ![gif演示](./src/demo/demo.gif)
