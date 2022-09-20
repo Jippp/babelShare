@@ -30,6 +30,7 @@ const fs = require('fs')
 const path = require('path')
 const { transformFileSync } = require('@babel/core')
 const simplePlugin = require('./simplePlugin')
+const myPresets = require('./myPresets')
 
 const { code } = transformFileSync(path.resolve(__dirname, './sourceCode.js'), {
   // 执行顺序是从前往后执行的
@@ -39,6 +40,7 @@ const { code } = transformFileSync(path.resolve(__dirname, './sourceCode.js'), {
       test: 'abc'
     }]
   ],
+  presets: [myPresets],
   parserOpts: {
     tokens: true
   }

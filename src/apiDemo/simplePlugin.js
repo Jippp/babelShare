@@ -6,12 +6,12 @@
  * @returns 
  */
 module.exports = (apis, options, dirname) => {
-  console.log(options, dirname)
   return {
     visitor: {
       Identifier(path) {
         const node = path.node
         if(node.name) {
+          console.log('simplePlugins!')
           node.name = 'afterPluginVal'
         }
       } 

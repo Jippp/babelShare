@@ -18,11 +18,15 @@ Babel是一个JavaScript compiler
 `Babel`一开始叫做`6To5`，就是将ES6代码转为ES5，用于将高版本代码转为低版本可以兼容的代码。
 随着后面`ES标准`不断发展，出现了`ES7/ES8`这些，所以改名为`Babel`。
 
-#### 解析器Compiler
+#### 解析器Parser
 
-解析器：简单来首就是用来分析源代码转为ast结构的
+解释器Parser和编译器Compiler的区别：编译会转成其他语言，解释器则不会。
 
-简单介绍一下几个JS解析器：
+js的解释器会通过词法分析、语法分析，将代码转为AST。
+
+Babel内置的Parser是基于`acorn`拓展而来的，叫做`babylon`
+
+简单介绍一下几个JS Parser：
 
 - esprima：是基于Firefox的js引擎`SpiderMonkey`内部规定的AST标准实现的，后来将这个AST标准命名为`ESTree`标准
 > github描述如下： Once upon a time, an unsuspecting Mozilla engineer created an API in Firefox that exposed the SpiderMonkey engine's JavaScript parser as a JavaScript API. Said engineer documented the format it produced, and this format caught on as a lingua franca for tools that manipulate JavaScript source code.
@@ -32,7 +36,6 @@ Babel是一个JavaScript compiler
 - acorn：轻量、快速且支持插件化的js解析器。现在大部分用到js解析器的基本上都是这个，比如espree后面也基于acorn重构了
 > github描述如下：A tiny, fast JavaScript parser, written completely in JavaScript.
 
-Babel内置的Parser是基于`acorn`拓展而来的，叫做`babylon`
 
 #### Babel的主要用法
 
@@ -121,7 +124,7 @@ traverser(ast, {
 #### enter和exit
 
 可以将这两个方法简单的认为是AST遍历时的“生命周期”。
-在遍历AST时，如果能和指定的节点匹配上就会先执行`entry函数`，然后再递归遍历子节点，最后执行`exit函数`。
+在遍历AST时，如果能和指定的节点匹配上就会先执行`enter函数`，然后再递归遍历子节点，最后执行`exit函数`。
 
 ```js
 // 这里贴上the-super-tiny-compiler内的代码来解释
@@ -144,8 +147,8 @@ function traverseNode(node, parent) {
 ```
 
 所以指定的节点可以是一个函数，也可以是一个对象：
-- 函数：相当于只有entry函数
-- 对象：可以配置entry和exit函数
+- 函数：相当于只有enter函数
+- 对象：可以配置enter和exit函数
 
 `traverser`函数的第二个参数：
 
@@ -158,7 +161,7 @@ function traverseNode(node, parent) {
 
 {
   Identifier： {
-    entry(path) {
+    enter(path) {
       // ...
     }
     exit(path) {
@@ -167,7 +170,6 @@ function traverseNode(node, parent) {
   }
 }
 ```
-
 
 ##### 访问者模式
 
@@ -228,6 +230,39 @@ module.exports = (apis, options, dirname) => {
     }
   }
 }
+```
+
+#### 执行顺序
+
+`plugins`的执行顺序是从前往后执行的，`presets`的执行顺序是从后往前执行的
+
+> presets执行顺序反过来的原因babel官网介绍如下：This was mostly for ensuring backwards compatibility, since most users listed "es2015" before "stage-0".
+> 确保兼容性的，防止某些presets兼容性有问题，后执行的可以兜底
+
+`plugins`和`presets`混用时会执行`plugins`后执行`presets`
+
+```js
+{
+  plugins: [a, b],
+  presets: [c, d]
+}
+```
+比如配置了这些plugins和presets，执行顺序：a -> b -> d -> c
+
+测试顺序代码参考[这里](./src/apiDemo/index.js)
+
+#### 自定义presets
+
+`presets`就是`plugins`的集合，也就是说多个`plugins`组成了`presets`
+
+自定义presets的写法如下：
+```js
+const somePlugin = require('xxx')
+
+module.exports = {
+  plugins: [somePlugin]
+}
+
 ```
 
 ---
